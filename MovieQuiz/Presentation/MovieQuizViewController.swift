@@ -23,6 +23,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var buttonYes: UIButton!
+    @IBOutlet private var buttonNo: UIButton!
     
     // MARK: - Instance Variables
     private var currentQuestionIndex = 0
@@ -82,7 +84,6 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // MARK: - Private Methods
-    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
                                  question: model.text,
@@ -98,9 +99,9 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = quizStep.questionNumber
         
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 0
+        imageView.layer.cornerRadius = 20
         imageView.layer.borderWidth = 0
-        imageView.layer.borderColor = UIColor.black.cgColor
+        imageView.layer.borderColor = UIColor.ypBlack.cgColor
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -112,8 +113,12 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.cornerRadius = 20
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        buttonNo.isEnabled = false
+        buttonYes.isEnabled = false
         // запускаем задачу через 1 секунду c помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.buttonNo.isEnabled = true
+            self.buttonYes.isEnabled = true
             self.showNextQuestionOrResults()
         }
     }
@@ -146,7 +151,7 @@ final class MovieQuizViewController: UIViewController {
                 text: text,
                 buttonText: "Сыграть ещё раз")
             show(quiz: viewModel)
-        } else { // 2
+        } else {
             imageView.layer.masksToBounds = false
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]

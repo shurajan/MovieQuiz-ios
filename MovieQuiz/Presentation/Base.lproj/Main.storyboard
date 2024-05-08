@@ -28,7 +28,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Tt-Qb-CVI">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="24"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   Вопрос" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGI-Y2-N7l" userLabel="Question Title Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   Вопрос" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGI-Y2-N7l" userLabel="Question Title Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="338" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="vcy-8h-9f9"/>
@@ -60,7 +60,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="mUh-I3-8BT"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
+                                        <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -119,6 +119,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="buttonNo" destination="gr6-X0-UbC" id="7eT-cp-SFB"/>
+                        <outlet property="buttonYes" destination="n6Q-N1-8Et" id="TzP-dq-L62"/>
                         <outlet property="counterLabel" destination="Abn-fj-Icm" id="y1O-cY-ey3"/>
                         <outlet property="imageView" destination="kM9-1q-nrs" id="PVX-al-7Uy"/>
                         <outlet property="textLabel" destination="2FT-I7-t0N" id="QvD-Ib-vrw"/>
