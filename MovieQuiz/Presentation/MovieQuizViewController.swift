@@ -1,4 +1,5 @@
 import UIKit
+import Foundation
 
 struct QuizQuestion {
     let image: String
@@ -20,11 +21,7 @@ struct QuizResults {
     private var maxResultTime: String = ""
     private var totalNumberOfQuestions = 0
     private var totalNumberOfCorrectAnswers = 0
-    private let dateFormatter = DateFormatter()
-    
-    init(){
-        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
-    }
+
     
     mutating func startRound(){
         currentQuestionIndex = 0
@@ -47,12 +44,7 @@ struct QuizResults {
         roundsNumber+=1
         if correctAnswers >= maxResult {
             maxResult = correctAnswers
-            maxResultTime = ""
-            if #available(iOS 15, *) {
-                maxResultTime = "(\(dateFormatter.string(from: Date.now)))"
-            } else {
-                maxResultTime = "(\(dateFormatter.string(from: Date())))"
-            }
+            maxResultTime = "(\(Date().dateTimeString))"
         }
     }
     
