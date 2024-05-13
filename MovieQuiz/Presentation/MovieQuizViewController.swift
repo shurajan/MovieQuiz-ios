@@ -7,21 +7,9 @@ struct QuizQuestion {
     let correctAnswer: Bool
 }
 
-struct QuizStepViewModel {
-    let image: UIImage
-    let question: String
-    let questionNumber: String
-}
-
 struct QuizResults {
     private(set) var currentQuestionIndex = 0
     private var correctAnswers = 0
-    private var roundsNumber = 0
-    private var maxResult = 0
-    private var maxResultTime: String = ""
-    private var totalNumberOfQuestions = 0
-    private var totalNumberOfCorrectAnswers = 0
-
     
     mutating func startRound(){
         currentQuestionIndex = 0
@@ -31,34 +19,22 @@ struct QuizResults {
     mutating func saveAnswerResults(isCorrect: Bool){
         if isCorrect {
             correctAnswers += 1
-            totalNumberOfCorrectAnswers += 1
         }
     }
     
     mutating func moveNextQuestion(){
         currentQuestionIndex += 1
-        totalNumberOfQuestions += 1
-    }
-    
-    mutating func finishRound(){
-        roundsNumber+=1
-        if correctAnswers >= maxResult {
-            maxResult = correctAnswers
-            maxResultTime = "(\(Date().dateTimeString))"
-        }
     }
     
     func string() -> String {
-        let averageResult: Double = 100.0 * Double(totalNumberOfCorrectAnswers) / Double(totalNumberOfQuestions)
-        let averageResultString = String(format: "%.2f", averageResult)
-        
-        return """
-               Ваш результат: \(correctAnswers)/10
-               Количество сыгранных квизов: \(roundsNumber)
-               Рекорд: \(maxResult)/10 \(maxResultTime)
-               Средняя точность: \(averageResultString)%
-               """
+        return "Ваш результат: \(correctAnswers)/10"
     }
+}
+
+struct QuizStepViewModel {
+    let image: UIImage
+    let question: String
+    let questionNumber: String
 }
 
 struct QuizResultsViewModel {
@@ -199,7 +175,6 @@ final class MovieQuizViewController: UIViewController {
     private func showNextQuestionOrResults() {
         quizResults.moveNextQuestion()
         if quizResults.currentQuestionIndex == questions.count {
-            quizResults.finishRound()
             let text = quizResults.string()
             
             let viewModel = QuizResultsViewModel(
