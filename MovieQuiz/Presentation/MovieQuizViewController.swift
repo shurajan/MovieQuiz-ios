@@ -98,8 +98,6 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false),
     ]
     
-    
-    
     // MARK: - Instance Methods
     override var shouldAutorotate: Bool {
         return false
@@ -107,6 +105,10 @@ final class MovieQuizViewController: UIViewController {
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     override func viewDidLoad() {
@@ -192,12 +194,14 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
+    @IBAction
+    private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[quizResults.currentQuestionIndex]
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
     
-    @IBAction func noButtonClicked(_ sender: UIButton) {
+    @IBAction 
+    private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[quizResults.currentQuestionIndex]
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
     }
