@@ -1,5 +1,4 @@
 import UIKit
-import Foundation
 
 struct QuizQuestion {
     let image: String
@@ -200,7 +199,7 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
     }
     
-    @IBAction 
+    @IBAction
     private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[quizResults.currentQuestionIndex]
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
