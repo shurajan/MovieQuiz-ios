@@ -41,6 +41,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.alertPresenter = alertPresenter
         
         self.questionFactory?.requestNextQuestion()
+        
+        //DELETE
+        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        print(documentsURL.path)
+        //print(Bundle.main.bundlePath)
+        //print(NSHomeDirectory())
     }
     
     // MARK: - QuestionFactoryDelegate
