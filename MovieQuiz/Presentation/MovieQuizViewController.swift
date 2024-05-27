@@ -11,7 +11,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Instance Variables
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
-    private var alertPresenter: AlertPresenter?
+    private var statisticService: StatisticService?
+    private var alertPresenter: ResultAlertPresenter?
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -36,17 +37,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory.delegate = self
         self.questionFactory = questionFactory
         
-        let alertPresenter = AlertPresenter()
+        self.statisticService = StatisticServiceImplementation()
+        
+        let alertPresenter = ResultAlertPresenter()
         alertPresenter.delegate = self
         self.alertPresenter = alertPresenter
         
         self.questionFactory?.requestNextQuestion()
-        
-        //DELETE
-        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        print(documentsURL.path)
-        //print(Bundle.main.bundlePath)
-        //print(NSHomeDirectory())
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -62,7 +59,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.show(quiz: viewModel)
         }
     }
-        
+    
     // MARK: - Private Methods
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
@@ -74,7 +71,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     
     private func show(quiz step: QuizStepViewModel) {
-       
+        
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
@@ -118,11 +115,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNextQuestionOrResults() {
+        guard let statisticService = self.statisticService else {return}
+        
         if currentQuestionIndex == questionsAmount-1 {
-            let text = correctAnswers == questionsAmount ?
-            "Поздравляем, вы ответили на 10 из 10!" :
-            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
             
+            let text = """
+            Ваш результат: \(correctAnswers)/\(questionsAmount)
+            Количество сыгранных квизов: \(statisticService.gamesCount)
+            Рекорд: \(statisticService.bestGame.correct)/\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
+            Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+            """
+
             let viewModel = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text: text,

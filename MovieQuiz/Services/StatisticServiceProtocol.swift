@@ -49,7 +49,7 @@ struct GameResult: Codable {
     
 }
 
-protocol StatisticServiceProtocol {
+protocol StatisticService {
     var totalAccuracy: Double { get }
     var gamesCount: Int { get }
     var bestGame: GameResult { get }

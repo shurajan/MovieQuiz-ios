@@ -7,10 +7,11 @@
 
 import UIKit
 
-class AlertPresenter {
+class ResultAlertPresenter {
     // MARK: - Instance Variables
     weak var delegate: UIViewController?
 
+    // MARK: - Public methods
     func showAlert(_ alertData: AlertModel){
         guard let delegate = self.delegate else {
             return

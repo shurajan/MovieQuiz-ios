@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class StatisticService {
+final class StatisticServiceImplementation {
     private let storage: UserDefaults = .standard
     
     private enum Keys: String {
@@ -32,7 +32,7 @@ final class StatisticService {
     }
 }
 
-extension StatisticService: StatisticServiceProtocol {
+extension StatisticServiceImplementation: StatisticService {
     var totalAccuracy: Double {
         if gamesCount > 0 {
             return Double(correctAnswers * 10)/Double(gamesCount)
@@ -54,9 +54,7 @@ extension StatisticService: StatisticServiceProtocol {
         get {
             let decoder = JSONDecoder()
             if let savedBestGame = storage.data(forKey: Keys.bestGame.rawValue),
-               let bestGame = try? decoder.decode(GameResult.self, from: savedBestGame) {
-                return bestGame
-            }
+               let bestGame = try? decoder.decode(GameResult.self, from: savedBestGame) { return bestGame}
             
             return GameResult()
         }
@@ -70,7 +68,7 @@ extension StatisticService: StatisticServiceProtocol {
     
     func store(correct count: Int, total amount: Int) {
         let latestGameResult = GameResult(correct: count, total: amount)
-        if latestGameResult.isBetterThan(bestGame) {
+        if latestGameResult.isBetterThan(self.bestGame) {
             self.bestGame = latestGameResult
         }
         self.gamesCount+=1
