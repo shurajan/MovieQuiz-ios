@@ -48,7 +48,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
+        guard let question else {
             return
         }
         
@@ -115,35 +115,36 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount-1 {
-            guard let statisticService = self.statisticService else {
-                let viewModel = QuizResultsViewModel(
-                    title: "Этот раунд окончен!",
-                    text: "Ваш результат: \(correctAnswers)/\(questionsAmount)",
-                    buttonText: "Сыграть ещё раз")
-                show(quiz: viewModel)
-                return
-            }
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
-            
-            let text = """
+        if currentQuestionIndex < questionsAmount-1 {
+            imageView.layer.masksToBounds = false
+            currentQuestionIndex+=1
+            self.questionFactory?.requestNextQuestion()
+            return
+        }
+        
+        guard let statisticService = self.statisticService else {
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: "Ваш результат: \(correctAnswers)/\(questionsAmount)",
+                buttonText: "Сыграть ещё раз")
+            show(quiz: viewModel)
+            return
+        }
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        
+        let text = """
             Ваш результат: \(correctAnswers)/\(questionsAmount)
             Количество сыгранных квизов: \(statisticService.gamesCount)
             Рекорд: \(statisticService.bestGame.correct)/\(questionsAmount) (\(statisticService.bestGame.date.dateTimeString))
             Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
             """
-
-            let viewModel = QuizResultsViewModel(
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть ещё раз")
-            show(quiz: viewModel)
-            
-        } else {
-            imageView.layer.masksToBounds = false
-            currentQuestionIndex+=1
-            self.questionFactory?.requestNextQuestion()
-        }
+        
+        let viewModel = QuizResultsViewModel(
+            title: "Этот раунд окончен!",
+            text: text,
+            buttonText: "Сыграть ещё раз")
+        show(quiz: viewModel)
+        
     }
     
     // MARK: - Actions
