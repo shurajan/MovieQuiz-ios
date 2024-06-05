@@ -3,12 +3,15 @@
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="YS Display-Bold.ttf">
+            <string>YSDisplay-Bold</string>
+        </array>
         <array key="YS Display-Medium.ttf">
             <string>YSDisplay-Medium</string>
         </array>
@@ -114,17 +117,23 @@
                                 </subviews>
                                 <color key="backgroundColor" name="YP Black"/>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="kA7-Nn-zY1">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="kA7-Nn-zY1" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="0Bv-fV-CXt"/>
                             <constraint firstItem="EYX-t8-etR" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="6NQ-a6-dZk"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="EYX-t8-etR" secondAttribute="trailing" constant="20" id="NLn-K2-kvJ"/>
                             <constraint firstItem="EYX-t8-etR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Rpz-I9-iVC"/>
                             <constraint firstItem="EYX-t8-etR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="dG1-yV-pk9"/>
+                            <constraint firstItem="kA7-Nn-zY1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="k9d-Ff-XH9"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="kA7-Nn-zY1" id="nHc-z7-zdq"/>
                         <outlet property="buttonNo" destination="gr6-X0-UbC" id="7eT-cp-SFB"/>
                         <outlet property="buttonYes" destination="n6Q-N1-8Et" id="TzP-dq-L62"/>
                         <outlet property="counterLabel" destination="Abn-fj-Icm" id="y1O-cY-ey3"/>
