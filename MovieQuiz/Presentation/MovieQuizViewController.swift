@@ -1,7 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    // MARK: - Controls
+    // MARK: - IB Outlets
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -31,6 +31,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         return .lightContent
     }
     
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.layer.masksToBounds = true
@@ -50,7 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.questionFactory?.loadData()
     }
     
-    // MARK: - QuestionFactoryDelegate
+    // MARK: - QuestionFactoryDelegate Implementation
     func didReceiveNextQuestion(question: QuizQuestion?) {
         hideLoadingIndicator()
         guard let question else {
@@ -65,9 +66,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    func didFailToReceiveNextQuestion(with error: Error){
+    func didFailToLoadImage(with error: Error){
         hideLoadingIndicator()
-        showQuestionLoadingError(message: error.localizedDescription)
+        showImageLoadingError(message: error.localizedDescription)
     }
     
     func didLoadDataFromServer() {
@@ -88,7 +89,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         
     }
-    
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderWidth = 0
@@ -185,7 +185,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     }
     
-    private func showQuestionLoadingError(message: String) {
+    private func showImageLoadingError(message: String) {
         let alertModel = AlertModel(title: "Что-то пошло не так(", message: message, buttonText: "Попробовать еще раз") {[weak self] in
             guard let self = self else {return}
             self.showLoadingIndicator()

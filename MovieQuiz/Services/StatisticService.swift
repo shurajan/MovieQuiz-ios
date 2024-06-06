@@ -16,6 +16,7 @@ struct GameResult: Codable {
         case correct, total, date
     }
     
+    // MARK: - Initializers
     init() {
         self.correct = 0
         self.total = 0
@@ -35,6 +36,7 @@ struct GameResult: Codable {
         self.date = try container.decode(Date.self, forKey: .date)
     }
     
+    // MARK: - Public Methods
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.correct, forKey: .correct)

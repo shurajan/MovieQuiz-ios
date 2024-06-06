@@ -32,7 +32,7 @@ final class StatisticServiceImplementation {
     }
 }
 
-//MARK: - реализуем протокол с помощью расширения
+//MARK: - StatisticsService protocol implementation
 extension StatisticServiceImplementation: StatisticService {
     var totalAccuracy: Double {
         if gamesCount > 0 {
