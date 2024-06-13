@@ -13,7 +13,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var statisticService: StatisticService?
-    private var alertPresenter: ResultAlertPresenter?
+    private var alertPresenter: AlertPresenter?
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
@@ -43,7 +43,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         self.statisticService = StatisticServiceImplementation()
         
-        let alertPresenter = ResultAlertPresenter()
+        let alertPresenter = AlertPresenter()
         alertPresenter.delegate = self
         self.alertPresenter = alertPresenter
         
@@ -119,7 +119,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func show(quiz result: QuizResultsViewModel) {
-        let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText) {[weak self] in
+        let alertModel = AlertModel(id: "GameResult",
+                                    title: result.title,
+                                    message: result.text,
+                                    buttonText: result.buttonText) {[weak self] in
             guard let self = self else {return}
             
             self.currentQuestionIndex = 0
@@ -174,7 +177,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
-        let alertModel = AlertModel(title: "Что-то пошло не так(", message: message, buttonText: "Попробовать еще раз") {[weak self] in
+        let alertModel = AlertModel(id: "NetworkErrorAlert",
+                                    title: "Что-то пошло не так(",
+                                    message: message,
+                                    buttonText: "Попробовать еще раз") {[weak self] in
             guard let self = self else {return}
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
@@ -186,7 +192,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showImageLoadingError(message: String) {
-        let alertModel = AlertModel(title: "Что-то пошло не так(", message: message, buttonText: "Попробовать еще раз") {[weak self] in
+        let alertModel = AlertModel(id: "ImageLoadingErrorAlert",
+                                    title: "Что-то пошло не так(",
+                                    message: message,
+                                    buttonText: "Попробовать еще раз") {[weak self] in
             guard let self = self else {return}
             self.showLoadingIndicator()
             self.questionFactory?.requestNextQuestion()

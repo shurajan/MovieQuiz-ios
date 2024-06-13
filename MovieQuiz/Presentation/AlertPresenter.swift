@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ResultAlertPresenter {
+final class AlertPresenter {
     // MARK: - Instance Variables
     weak var delegate: UIViewController?
 
@@ -21,6 +21,7 @@ class ResultAlertPresenter {
             title: alertData.title,
             message: alertData.message,
             preferredStyle: .alert)
+        alert.view.accessibilityIdentifier = alertData.id
         
         let action = UIAlertAction(title: alertData.buttonText, style: .default) {_ in
             alertData.completion()
