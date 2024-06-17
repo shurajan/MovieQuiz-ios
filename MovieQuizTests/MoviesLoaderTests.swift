@@ -36,14 +36,12 @@ final class MoviesLoaderTests: XCTestCase {
     
     func testFailureLoading () throws {
         // Given
-        // Given
         let stubNetworkService:NetworkRouting = StubNetworkService(emulateError: true)
         let loader = MoviesLoader(networkService: stubNetworkService)
         
         // When
         
         
-        // Then
         // Then
         let expectation = expectation(description: "Movies loading expectation")
         
