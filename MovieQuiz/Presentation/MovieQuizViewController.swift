@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     // MARK: - IB Outlets
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -38,7 +38,7 @@ final class MovieQuizViewController: UIViewController {
         let alertPresenter = AlertPresenter()
         alertPresenter.delegate = self
         self.alertPresenter = alertPresenter
-
+        
     }
     
     // MARK: - Public Methods
@@ -51,7 +51,20 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     
-    func highlightImageBorders(isCorrectAnswer: Bool) {
+    func show(quiz result: QuizResultsViewModel) {
+        let alertModel = AlertModel(id: "GameResult",
+                                    title: result.title,
+                                    message: result.text,
+                                    buttonText: result.buttonText) {[weak self] in
+            guard let self = self else {return}
+            
+            presenter.restartGame()
+        }
+        self.alertPresenter?.showAlert(alertModel)
+    }
+    
+    
+    func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -66,20 +79,6 @@ final class MovieQuizViewController: UIViewController {
         self.buttonNo.isEnabled = true
         self.buttonYes.isEnabled = true
     }
-    
-    
-    func show(quiz result: QuizResultsViewModel) {
-        let alertModel = AlertModel(id: "GameResult",
-                                    title: result.title,
-                                    message: result.text,
-                                    buttonText: result.buttonText) {[weak self] in
-            guard let self = self else {return}
-            
-            presenter.restartGame()
-        }
-        self.alertPresenter?.showAlert(alertModel)
-    }
-    
     
     func showLoadingIndicator() {
         activityIndicator.startAnimating()
@@ -100,7 +99,7 @@ final class MovieQuizViewController: UIViewController {
             presenter.restartGame()
         }
         self.alertPresenter?.showAlert(alertModel)
-
+        
     }
     
     func showImageLoadingError(message: String) {
