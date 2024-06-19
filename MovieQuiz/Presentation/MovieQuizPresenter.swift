@@ -23,36 +23,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         self.viewController = viewController
         
         self.questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        reLoadData()
-    }
-    
-    
-    // MARK: - Public Methods
-    func isLastQuestion()->Bool {
-        return currentQuestionIndex == questionsAmount-1
-    }
-    
-    func reLoadData(){
-        questionFactory?.loadData()
-        viewController?.showLoadingIndicator()
-    }
-    
-    func restartGame(){
-        currentQuestionIndex = 0
-        correctAnswers = 0
-        questionFactory?.requestNextQuestion()
-    }
-    
-    private func switchToNextQuestion(){
-        currentQuestionIndex += 1
-    }
-    
-    func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        
+        loadData()
     }
     
     // MARK: - QuestionFactoryDelegate Implementation
@@ -85,13 +56,49 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController?.showNetworkError(message: error.localizedDescription)
     }
     
-    //MARK -END
+    // MARK: - Public Methods
+    func loadData(){
+        viewController?.showLoadingIndicator()
+        questionFactory?.loadData()
+    }
+    
+    func loadQuestionData(){
+        viewController?.showLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func restartGame(){
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func convert(model: QuizQuestion) -> QuizStepViewModel {
+        return QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex+1)/\(questionsAmount)")
+        
+    }
+    
+    func yesButtonClicked() {
+        didAnswer(isYes: true)
+    }
     
     
-    func showNextQuestionOrResults() {
+    func noButtonClicked() {
+        didAnswer(isYes: false)
+    }
+    
+    // MARK: - Private Methods
+    private func isLastQuestion()->Bool {
+        return currentQuestionIndex == questionsAmount - 1
+    }
+    
+    private func showNextQuestionOrResults() {
         if !self.isLastQuestion() {
-            self.switchToNextQuestion()
-            self.questionFactory?.requestNextQuestion()
+            currentQuestionIndex += 1
+            self.loadQuestionData()
             return
         }
         
@@ -112,10 +119,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         
     }
     
-    
     private func showAnswerResult(isCorrect: Bool) {
-        didAnswer(isCorrect: isCorrect)
-        
+        if isCorrect {
+            correctAnswers += 1
+        }
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         viewController?.blockButtons()
         
@@ -126,11 +133,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func didAnswer(isCorrect: Bool){
-        if isCorrect {
-            correctAnswers += 1
-        }
-    }
     
     private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
@@ -138,15 +140,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
         
         showAnswerResult(isCorrect: currentQuestion.correctAnswer == isYes)
-    }
-    
-    func yesButtonClicked() {
-        didAnswer(isYes: true)
-    }
-    
-
-    func noButtonClicked() {
-       didAnswer(isYes: false)
     }
     
     

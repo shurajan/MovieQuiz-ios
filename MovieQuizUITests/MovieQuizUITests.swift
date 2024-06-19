@@ -9,18 +9,15 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizUITests: XCTestCase {
-    // swiftlint:disable:next implicitly_unwrapped_optional
     var app: XCUIApplication!
-    let delay: UInt32 = 2
+    let delay: UInt32 = 3
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         
         app = XCUIApplication()
         app.launch()
-        
-        // это специальная настройка для тестов: если один тест не прошёл,
-        // то следующие тесты запускаться не будут; и правда, зачем ждать?
+
         continueAfterFailure = false
     }
     override func tearDownWithError() throws {
@@ -31,6 +28,7 @@ final class MovieQuizUITests: XCTestCase {
     }
     
     func testYesButton() throws {
+        sleep(delay)
         let firstPoster = app.images["Poster"]
         let firstPosterData = firstPoster.screenshot().pngRepresentation
         
@@ -44,6 +42,7 @@ final class MovieQuizUITests: XCTestCase {
     }
     
     func testNoButton() throws {
+        sleep(delay)
         let firstPoster = app.images["Poster"]
         let firstPosterData = firstPoster.screenshot().pngRepresentation
         
@@ -57,43 +56,45 @@ final class MovieQuizUITests: XCTestCase {
     }
     
     func testIndexLabel() throws {
-        let indexLabel = app.staticTexts["Index"]
+        sleep(delay)
         app.buttons["Yes"].tap()
         sleep(delay)
         
+        let indexLabel = app.staticTexts["Index"]
         XCTAssertEqual(indexLabel.label, "2/10")
     }
     
     func testRoundAlert() throws {
-        let indexLabel = app.staticTexts["Index"]
+        sleep(delay)
         for _ in (0..<10) {
             app.buttons["Yes"].tap()
-            sleep(2)
+            sleep(delay)
         }
-        XCTAssertEqual(indexLabel.label, "10/10")
+        
+        let indexLabelPrior = app.staticTexts["Index"]
+        XCTAssertEqual(indexLabelPrior.label, "10/10")
         let alert = app.alerts["GameResult"]
         
         XCTAssertTrue(alert.exists)
         XCTAssertEqual(alert.label, "Этот раунд окончен!")
         XCTAssertEqual(alert.buttons.firstMatch.label, "Сыграть ещё раз")
+        
     }
     
     func testRoundAlertButtonTap() throws {
-       
+        sleep(delay)
         for _ in (0..<10) {
-            app.buttons["Yes"].tap()
+            app.buttons["No"].tap()
             sleep(delay)
         }
-
         let alert = app.alerts["GameResult"]
-        
         XCTAssertTrue(alert.exists)
+        
         alert.buttons.firstMatch.tap()
         sleep(delay)
         XCTAssertFalse(alert.exists)
         
-        let indexLabel = app.staticTexts["Index"]
-        XCTAssertEqual(indexLabel.label, "1/10")
-
+        let indexLabelAfter = app.staticTexts["Index"]
+        XCTAssertEqual(indexLabelAfter.label, "1/10")
     }
 }
