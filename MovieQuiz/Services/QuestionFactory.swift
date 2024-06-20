@@ -22,6 +22,7 @@ final class QuestionFactory : QuestionFactoryProtocol{
         self.delegate = delegate
     }
     
+    // MARK: - Public Methods
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {
@@ -56,10 +57,7 @@ final class QuestionFactory : QuestionFactoryProtocol{
             }
             
             let rating = Float(movie.rating) ?? 0
-            
-            let testRating = Int.random(in: 6..<10)
-            let text = "Рейтинг этого фильма больше чем \(testRating)?"
-            let correctAnswer = rating > Float(testRating)
+            let (text, correctAnswer) = generateRandomQuestion(from: rating)
             
             let question = QuizQuestion(image: imageData,
                                         text: text,
@@ -69,6 +67,23 @@ final class QuestionFactory : QuestionFactoryProtocol{
                 guard let self = self else { return }
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
+        }
+    }
+    
+    // MARK: - Private Methods
+    private func generateRandomQuestion(from rating:Float) -> (String, Bool) {
+        let integerRating = Int(rating)
+        let isBigger = Bool.random()
+        let testRating = Int.random(in: integerRating-1..<10)
+        
+        if isBigger {
+            let text = "Рейтинг этого фильма больше чем \(testRating)?"
+            let correctAnswer = rating > Float(testRating)
+            return (text, correctAnswer)
+        } else {
+            let text = "Рейтинг этого фильма меньше чем \(testRating)?"
+            let correctAnswer = rating < Float(testRating)
+            return (text, correctAnswer)
         }
     }
 }

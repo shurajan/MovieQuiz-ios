@@ -10,7 +10,8 @@ import XCTest
 
 final class MovieQuizUITests: XCTestCase {
     var app: XCUIApplication!
-    let delay: UInt32 = 3
+    let initialLoadDelay: UInt32 = 3
+    let buttonTapDelay: UInt32 = 2
     
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -28,12 +29,12 @@ final class MovieQuizUITests: XCTestCase {
     }
     
     func testYesButton() throws {
-        sleep(delay)
+        sleep(initialLoadDelay)
         let firstPoster = app.images["Poster"]
         let firstPosterData = firstPoster.screenshot().pngRepresentation
         
         app.buttons["Yes"].tap()
-        sleep(delay)
+        sleep(buttonTapDelay)
         
         let secondPoster = app.images["Poster"]
         let secondPosterData = secondPoster.screenshot().pngRepresentation
@@ -42,12 +43,12 @@ final class MovieQuizUITests: XCTestCase {
     }
     
     func testNoButton() throws {
-        sleep(delay)
+        sleep(initialLoadDelay)
         let firstPoster = app.images["Poster"]
         let firstPosterData = firstPoster.screenshot().pngRepresentation
         
         app.buttons["No"].tap()
-        sleep(delay)
+        sleep(buttonTapDelay)
         
         let secondPoster = app.images["Poster"]
         let secondPosterData = secondPoster.screenshot().pngRepresentation
@@ -56,19 +57,19 @@ final class MovieQuizUITests: XCTestCase {
     }
     
     func testIndexLabel() throws {
-        sleep(delay)
+        sleep(initialLoadDelay)
         app.buttons["Yes"].tap()
-        sleep(delay)
+        sleep(buttonTapDelay)
         
         let indexLabel = app.staticTexts["Index"]
         XCTAssertEqual(indexLabel.label, "2/10")
     }
     
     func testRoundAlert() throws {
-        sleep(delay)
+        sleep(initialLoadDelay)
         for _ in (0..<10) {
             app.buttons["Yes"].tap()
-            sleep(delay)
+            sleep(buttonTapDelay)
         }
         
         let indexLabelPrior = app.staticTexts["Index"]
@@ -82,16 +83,16 @@ final class MovieQuizUITests: XCTestCase {
     }
     
     func testRoundAlertButtonTap() throws {
-        sleep(delay)
+        sleep(initialLoadDelay)
         for _ in (0..<10) {
             app.buttons["No"].tap()
-            sleep(delay)
+            sleep(buttonTapDelay)
         }
         let alert = app.alerts["GameResult"]
         XCTAssertTrue(alert.exists)
         
         alert.buttons.firstMatch.tap()
-        sleep(delay)
+        sleep(buttonTapDelay)
         XCTAssertFalse(alert.exists)
         
         let indexLabelAfter = app.staticTexts["Index"]

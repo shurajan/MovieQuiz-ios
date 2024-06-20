@@ -12,7 +12,7 @@ import XCTest
 final class MoviesLoaderTests: XCTestCase {
     func testSuccessLoading () throws {
         // Given
-        let stubNetworkService:NetworkRouting = StubNetworkService(emulateError: false)
+        let stubNetworkService:NetworkRouting = StubNetworkService(errorType: TestErrorType.none)
         let loader = MoviesLoader(networkService: stubNetworkService)
         
         // When
@@ -36,7 +36,32 @@ final class MoviesLoaderTests: XCTestCase {
     
     func testFailureLoading () throws {
         // Given
-        let stubNetworkService:NetworkRouting = StubNetworkService(emulateError: true)
+        let stubNetworkService:NetworkRouting = StubNetworkService(errorType: TestErrorType.getTestError)
+        let loader = MoviesLoader(networkService: stubNetworkService)
+        
+        // When
+        
+        
+        // Then
+        let expectation = expectation(description: "Movies loading expectation")
+        
+        loader.loadMovies {result in
+            switch result {
+            case .success(_):
+                XCTFail()
+            case .failure(let error):
+                XCTAssertNotNil(error)
+                expectation.fulfill()
+            }
+            
+        }
+        waitForExpectations(timeout: 1)
+        
+    }
+    
+    func testFailureLoadingWithErrorMessage () throws {
+        // Given
+        let stubNetworkService:NetworkRouting = StubNetworkService(errorType: TestErrorType.getErrorMessage)
         let loader = MoviesLoader(networkService: stubNetworkService)
         
         // When
