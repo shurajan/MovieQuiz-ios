@@ -71,7 +71,7 @@ final class QuestionFactory : QuestionFactoryProtocol{
     }
     
     // MARK: - Private Methods
-    private func generateRandomQuestion(from rating:Float) -> (String, Bool) {
+    private func generateRandomQuestion(from rating: Float) -> (String, Bool) {
         let integerRating = Int(rating)
         let isBigger = Bool.random()
         let testRating = Int.random(in: integerRating-1..<10)

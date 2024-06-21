@@ -33,7 +33,7 @@ final class StatisticServiceImplementation {
 }
 
 //MARK: - StatisticsService protocol implementation
-extension StatisticServiceImplementation: StatisticService {
+extension StatisticServiceImplementation: StatisticServiceProtocol {
     var totalAccuracy: Double {
         if gamesCount > 0 {
             return Double(correctAnswers * 10)/Double(gamesCount)

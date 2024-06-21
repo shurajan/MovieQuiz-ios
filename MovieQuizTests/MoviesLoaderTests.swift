@@ -43,7 +43,7 @@ final class MoviesLoaderTests: XCTestCase {
         
         
         // Then
-        let expectation = expectation(description: "Movies loading expectation")
+        let expectation = expectation(description: "Movies loading TestError expectation")
         
         loader.loadMovies {result in
             switch result {
@@ -68,7 +68,7 @@ final class MoviesLoaderTests: XCTestCase {
         
         
         // Then
-        let expectation = expectation(description: "Movies loading expectation")
+        let expectation = expectation(description: "Movies loading with errorMessage expectation")
         
         loader.loadMovies {result in
             switch result {
