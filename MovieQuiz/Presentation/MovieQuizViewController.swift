@@ -63,6 +63,9 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         self.alertPresenter?.showAlert(alertModel)
     }
     
+    func showAlert(model: AlertModel){
+        alertPresenter?.showAlert(model)
+    }
     
     func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true

@@ -8,38 +8,6 @@
 import XCTest
 @testable import MovieQuiz
 
-final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
-    func show(quiz step: QuizStepViewModel){
-        
-    }
-    func show(quiz result: QuizResultsViewModel){
-        
-    }
-    
-    func highlightImageBorder(isCorrectAnswer: Bool){
-        
-    }
-    func blockButtons(){
-        
-    }
-    func unblockButtons(){
-        
-    }
-    func showLoadingIndicator(){
-        
-    }
-    func hideLoadingIndicator(){
-        
-    }
-    
-    func showNetworkError(message: String){
-        
-    }
-    func showImageLoadingError(message: String){
-        
-    }
-}
-
 final class MovieQuizPresenterTests: XCTestCase {
     func testPresenterConvertModel() throws {
         //Given
