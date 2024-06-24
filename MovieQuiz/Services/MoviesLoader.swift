@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum LoadingError: Error {
+    case errorMessage(String)
+}
+
 protocol MoviesLoading {
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void)
 }
@@ -14,7 +18,11 @@ protocol MoviesLoading {
 
 struct MoviesLoader: MoviesLoading {
     // MARK: - NetworkClient
-    private let networkClient = NetworkService()
+    private let networkService: NetworkRouting
+    
+    init(networkService: NetworkRouting = NetworkService()) {
+        self.networkService = networkService
+    }
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
@@ -27,12 +35,17 @@ struct MoviesLoader: MoviesLoading {
     
     // MARK: - Public Methods
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
-        networkClient.fetch(url: self.mostPopularMoviesUrl){result in
+        networkService.fetch(url: self.mostPopularMoviesUrl){result in
             switch result{
             case .success(let data):
                 do {
                     let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
-                    handler(.success(mostPopularMovies))
+                    if mostPopularMovies.errorMessage == "" {
+                        handler(.success(mostPopularMovies))
+                    } else {
+                        handler(.failure(LoadingError.errorMessage(mostPopularMovies.errorMessage)))
+                    }
+                    
                 } catch {
                     handler(.failure(error))
                 }

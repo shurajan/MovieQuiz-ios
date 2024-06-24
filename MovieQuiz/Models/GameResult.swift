@@ -1,8 +1,8 @@
 //
-//  StatisticService.swift
+//  GameResult.swift
 //  MovieQuiz
 //
-//  Created by Alexander Bralnin on 24.05.2024.
+//  Created by Alexander Bralnin on 24.06.2024.
 //
 
 import Foundation
@@ -47,12 +47,4 @@ struct GameResult: Codable {
     func isBetterThan(_ another: GameResult) -> Bool {
         correct > another.correct
     }
-}
-
-protocol StatisticService {
-    var totalAccuracy: Double { get }
-    var gamesCount: Int { get }
-    var bestGame: GameResult { get }
-    
-    func store(correct count: Int, total amount: Int)
 }
